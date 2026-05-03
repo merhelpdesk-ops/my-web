@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MER 注册测试</title>
+    <style>
+        body { background: #121212; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e1e1e; padding: 30px; border-radius: 15px; width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #2c2c2c; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #ffca28; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>用户注册</h2>
+        <input type="email" id="email" placeholder="邮箱">
+        <input type="password" id="password" placeholder="密码">
+        <button onclick="signUp()">立即注册</button>
+        <p id="status" style="font-size: 12px; text-align: center;"></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // ↓↓↓ 在这里填入你自己的 Firebase 项目配置 ↓↓↓
+        const firebaseConfig = {
+            apiKey: "你的API_KEY",
+            authDomain: "你的项目域名",
+            projectId: "你的项目ID",
+            storageBucket: "你的存储桶",
+            messagingSenderId: "你的发送ID",
+            appId: "你的APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.signUp = () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const status = document.getElementById('status');
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => { status.innerText = "注册成功！去后台看看吧"; status.style.color = "#4caf50"; })
+                .catch((error) => { status.innerText = "错误: " + error.message; status.style.color = "#f44336"; });
+        };
+    </script>
+</body>
+</html>
